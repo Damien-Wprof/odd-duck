@@ -1,42 +1,60 @@
 let products = [];
+let rounds = 25;
+let totalClicks = 0;
 
 function Product(name, filepath) {
   this.name = name;
   this.filepath = filepath;
   this.timesShown = 0;
+  this.timesClicked = 0;
 
   products.push(this);
 }
 
-let bag = new Product("bag", "img/bag.jpg");
-let nana = new Product("banana", "img/banana.jpg");
-let bathroom = new Product("bathroom", "img/bathroom.jpg");
-let boots = new Product("boots", "img/boots.jpg");
-let breakfast = new Product("breakfast", "img/breakfast.jpg");
-let bubblegum = new Product("bubblegum", "img/bubblegum.jpg");
-let chair = new Product("chair", "img/chair.jpg");
-let cthulhu = new Product("cthulhu", "img/cthulhu.jpg");
-let dogDuck = new Product("dog-duck", "img/dog-duck.jpg");
-let dragon = new Product("dragon", "img/dragon.jpg");
-let pen = new Product("pen", "img/pen.jpg");
-let petSweep = new Product("pet-sweep", "img/pet-sweep.jpg");
-let scissors = new Product("scissors", "img/scissors.jpg");
-let shark = new Product("shark", "img/shark.jpg");
-let sweep = new Product("sweep", "img/sweep.");
-let tauntaun = new Product("tauntaun", "img/tauntaun.jpg");
-let unicorn = new Product("unicorn", "img/unicorn.jpg");
-let waterCan = new Product("water-can", "img/water-can.jpg");
-let wineGlass = new Product("wine-glass", "img/wine-glass.jpg");
+new Product("Bag", "img/bag.jpg");
+new Product("Banana", "img/banana.jpg");
+new Product("Bathroom", "img/bathroom.jpg");
+new Product("Boots", "img/boots.jpg");
+new Product("Breakfast", "img/breakfast.jpg");
+new Product("Bubblegum", "img/bubblegum.jpg");
+new Product("Chair", "img/chair.jpg");
+new Product("Cthulhu", "img/cthulhu.jpg");
+new Product("Dog-duck", "img/dog-duck.jpg");
+new Product("Dragon", "img/dragon.jpg");
+new Product("Pen", "img/pen.jpg");
+new Product("Pet-sweep", "img/pet-sweep.jpg");
+new Product("Scissors", "img/scissors.jpg");
+new Product("Shark", "img/shark.jpg");
+new Product("Sweep", "img/sweep.png");
+new Product("Tauntaun", "img/tauntaun.jpg");
+new Product("Unicorn", "img/unicorn.jpg");
+new Product("Water-can", "img/water-can.jpg");
+new Product("Wine-glass", "img/wine-glass.jpg");
 
 const votesSection = document.querySelector('.votes');
 const img1 = document.querySelector('.votes1 img');
 const img2 = document.querySelector('.votes2 img');
 const img3 = document.querySelector('.votes3 img');
-
+const resultsBtn = document.getElementById('resultsBtn');
 
 
 function getRandomIndex() {
   return Math.floor(Math.random() * products.length);
+}
+
+function showResults() {
+
+  const resultsDiv = document.querySelector('.results');
+
+  for (let i = 0; i < products.length; i++) {
+
+    let p = document.createElement('p');
+
+    p.textContent =
+      `${products[i].name} had ${products[i].timesClicked} votes and was seen ${products[i].timesShown} times`;
+
+    resultsDiv.appendChild(p);
+  }
 }
 
 function renderProducts() {
@@ -57,13 +75,35 @@ function renderProducts() {
   img2.src = products[index2].filepath;
   img3.src = products[index3].filepath;
 
+  img1.dataset.index = index1;
+  img2.dataset.index = index2;
+  img3.dataset.index = index3;
+
   products[index1].timesShown++;
   products[index2].timesShown++;
   products[index3].timesShown++;
 }
 
+function handleClick(event) {
+
+  if (event.target.tagName === 'IMG') {
+
+    let index = event.target.dataset.index;
+    products[index].timesClicked++;
+
+    totalClicks++;
+
+    if (totalClicks < rounds) {
+      renderProducts();
+    } else {
+      votesSection.removeEventListener('click', handleClick);
+    }
+  }
+}
+
 renderProducts();
 
 votesSection.addEventListener('click', handleClick);
+resultsBtn.addEventListener('click', showResults);
 
-console.log(index);
+console.log(products);
