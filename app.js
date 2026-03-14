@@ -1,6 +1,7 @@
 let products = [];
 let rounds = 25;
 let totalClicks = 0;
+let previousIndexes = [];
 
 function Product(name, filepath) {
   this.name = name;
@@ -57,17 +58,25 @@ function showResults() {
   }
 }
 
+
 function renderProducts() {
 
   let index1 = getRandomIndex();
-  let index2 = getRandomIndex();
-  let index3 = getRandomIndex();
+  while (previousIndexes.includes(index1)) {
+    index1 = getRandomIndex();
+  }
 
-  while (index2 === index1) {
+  let index2 = getRandomIndex();
+  while (index2 === index1 || previousIndexes.includes(index2)) {
     index2 = getRandomIndex();
   }
 
-  while (index3 === index1 || index3 === index2) {
+  let index3 = getRandomIndex();
+  while (
+    index3 === index1 ||
+    index3 === index2 ||
+    previousIndexes.includes(index3)
+  ) {
     index3 = getRandomIndex();
   }
 
@@ -82,6 +91,8 @@ function renderProducts() {
   products[index1].timesShown++;
   products[index2].timesShown++;
   products[index3].timesShown++;
+
+  previousIndexes = [index1, index2, index3];
 }
 
 function handleClick(event) {
@@ -100,6 +111,27 @@ function handleClick(event) {
     }
   }
 }
+
+const ctx = document.getElementById('myChart');
+
+ new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 
 renderProducts();
 
