@@ -137,3 +137,9 @@ renderProducts();
 
 votesSection.addEventListener('click', handleClick);
 resultsBtn.addEventListener('click', showResults);
+
+localStorage.setItem("products", JSON.stringify(products));
+
+let data = localStorage.getItem("products");
+JSON.parse(data);
+console.log(data);
