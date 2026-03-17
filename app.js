@@ -141,5 +141,5 @@ resultsBtn.addEventListener('click', showResults);
 localStorage.setItem("products", JSON.stringify(products));
 
 let data = localStorage.getItem("products");
-JSON.parse(data);
-console.log(data);
+let parsed = JSON.parse(data);
+console.log(parsed);
