@@ -137,5 +137,3 @@ renderProducts();
 
 votesSection.addEventListener('click', handleClick);
 resultsBtn.addEventListener('click', showResults);
-
-console.log(products);
